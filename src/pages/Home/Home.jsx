@@ -23,9 +23,7 @@ function Home() {
           movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))
-        ) : (
-          {/* <p>No movies available</p> */}
-        )
+        ) : ""
       } 
       </main>
     </div>
