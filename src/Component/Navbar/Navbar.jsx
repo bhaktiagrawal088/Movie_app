@@ -3,6 +3,8 @@ import { styled, alpha } from '@mui/material/styles';
 import {AppBar, Box, Toolbar, Typography, InputBase} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import SelectorComponent from '../SelectorComp/SelectorComponent';
+import { useDispatch , useSelector} from 'react-redux';
+import { setSearchValue } from '../../Slice/MovieSlice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -45,6 +47,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+
+  const dispatch = useDispatch();
+
+  const {searchValue} = useSelector(state => state.movies )
+  const SearchChange = (e) =>{
+    dispatch(setSearchValue(e.target.value));
+  }
+  console.log(searchValue)
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -58,7 +69,7 @@ export default function Navbar() {
           >
             Movies App
           </Typography>
-          <Search>
+          <Search onChange={SearchChange}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Chip from '@mui/material/Chip';
 import StarIcon from '@mui/icons-material/Star';
 import Icon from '@mui/material/Icon';
+import { blue, grey } from '@mui/material/colors';
 
 
 
@@ -19,13 +20,13 @@ export default function MovieCard({movie}) {
   const {name, img_link, director_name, writter_name , duration, genre, year, imdb_rating } = movie
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, backgroundColor: blue[100]}} >
       <CardMedia
         sx={{ height: 500 }}
         image={img_link}
         title="green iguana"
       />
-      <CardContent>
+      <CardContent >
         <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
@@ -43,20 +44,14 @@ export default function MovieCard({movie}) {
         <Icon sx={{ color: 'gold' , marginLeft: 2 }} > 
         <StarIcon/> 
       </Icon>{imdb_rating}
-      <b style={{ marginLeft: 24}} >{year}</b>
+        <b style={{ marginLeft: 24}} >{year}</b>
         </Typography>
       </CardContent>
       <CardActions>
       <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-          
-    
       </IconButton>
-    
-        
-       
       </CardActions>
-    
     </Card>
   );
 }
