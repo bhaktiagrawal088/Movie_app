@@ -4,7 +4,7 @@ const initialState = {
     movies : [],
     selectedGenre: [], 
     searchValue : " ",
-    favorites : []
+    favoriteMovie : []
 }
 const MovieSlice =  createSlice({
     name : 'movies',
@@ -20,30 +20,15 @@ const MovieSlice =  createSlice({
             state.selectedGenre = action.payload || [ ];
         },
        
-        setFavoriteMovies: (state, action) => {
-            state.favorites = Array.isArray(action.payload) ? action.payload : [];
-        },
         addFavoriteMovie: (state, action) => {
-            if (Array.isArray(state.favorites)) {
-              if (!state.favorites.find(movie => movie.id === action.payload.id)) {
-                console.log("Adding Movie:", action.payload);
-                state.favorites.push(action.payload);
-
-              }
-            } else {
-              state.favorites = [action.payload];
-            }
-          },
-          removeFavoriteMovie: (state, action) => {
-            // Ensure favoriteMovies is an array
-            if (Array.isArray(state.favorites)) {
-                console.log("Removing Movie ID:", action.payload);
-              state.favorites = state.favorites.filter(movie => movie.id !== action.payload);
-            }
-          },
+          state.favoriteMovie.push(action.payload);
+        },
+        removeFavoriteMovie: (state, action) => {
+          state.favoriteMovie = state.favoriteMovie.filter(movie => movie.id !== action.payload);
+        },
        
     }
 })
 
-export const {setMovies,setSearchValue , setGenresValue ,addFavoriteMovie, setFavoriteMovie, removeFavoriteMovie} = MovieSlice.actions
+export const {setMovies,setSearchValue , setGenresValue ,addFavoriteMovie, removeFavoriteMovie} = MovieSlice.actions
 export default MovieSlice.reducer
