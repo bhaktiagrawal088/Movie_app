@@ -14,6 +14,12 @@ export const GetMoviesBySearch = (movies = [], value = '') => {
     return filteredMovies;
   };
 
+
+  export const GetMoviesByGenre = (movies, genre) => {
+    if (!genre) return movies;
+    return movies.filter((movie) => movie.genre.toLowerCase() === genre.toLowerCase());
+  };
+
 // export const getMoviesBySearch = (movies = [], value = '') => {
 //     if (!Array.isArray(movies) || typeof value !== 'string') {
 //       return [];

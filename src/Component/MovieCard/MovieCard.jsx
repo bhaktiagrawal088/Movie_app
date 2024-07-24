@@ -10,7 +10,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Chip from '@mui/material/Chip';
 import StarIcon from '@mui/icons-material/Star';
 import Icon from '@mui/material/Icon';
-import { blue, grey } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useDispatch , useSelector} from 'react-redux';
+import { addFavoriteMovie, removeFavoriteMovie } from '../../Slice/MovieSlice';
+import { getFavoriteMovies } from '../../Slice/SelectFavMovie';
+import { useTheme } from '../../context/theme';
+
 
 
 
@@ -18,9 +24,25 @@ import { blue, grey } from '@mui/material/colors';
 export default function MovieCard({movie}) {
 
   const {name, img_link, director_name, writter_name , duration, genre, year, imdb_rating } = movie
+  const dispatch = useDispatch();
+  const favoriteMovies = useSelector(getFavoriteMovies);
+  // console.log("Favorite Movies in Redux State:", favoriteMovies);
+
+  const isFavorite = Array.isArray(favoriteMovies) && favoriteMovies.some((favMovie) => favMovie.id === movie.id);
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      dispatch(removeFavoriteMovie(movie.id));
+    } else {
+      dispatch(addFavoriteMovie(movie));
+    }
+  };
+  // console.log(isFavorite)
+
+  const { themeMode } = useTheme();
 
   return (
-    <Card sx={{ maxWidth: 345, backgroundColor: blue[100]}} >
+    <Card sx={{ maxWidth: 345, backgroundColor: themeMode === 'dark' ? blue[900] : blue[100] }} >
       <CardMedia
         sx={{ height: 500 }}
         image={img_link}
@@ -48,9 +70,12 @@ export default function MovieCard({movie}) {
         </Typography>
       </CardContent>
       <CardActions>
-      <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-      </IconButton>
+      <IconButton
+          onClick={handleFavoriteClick}
+          color={isFavorite ? 'error' : 'primary'}
+        >
+          {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
       </CardActions>
     </Card>
   );
