@@ -16,6 +16,7 @@ import { useDispatch , useSelector} from 'react-redux';
 import { addFavoriteMovie, removeFavoriteMovie } from '../../Slice/MovieSlice';
 import { getFavoriteMovies } from '../../Slice/SelectFavMovie';
 import { useTheme } from '../../context/theme';
+import { debounce } from 'lodash';
 
 
 
@@ -27,16 +28,40 @@ export default function MovieCard({movie}) {
   const dispatch = useDispatch();
   const favoriteMovies = useSelector(getFavoriteMovies);
   // console.log("Favorite Movies in Redux State:", favoriteMovies);
-
+  // console.log("movie", movie)
   const isFavorite = Array.isArray(favoriteMovies) && favoriteMovies.some((favMovie) => favMovie.id === movie.id);
 
+
+  // const debouncedHandleFavoriteClick = React.useMemo(() => debounce(() => {
+  //   console.log('Current Favorite Movies:', favoriteMovies);
+  //   if (isFavorite) {
+  //     console.log('Dispatching removeFavoriteMovie with id:', movie.id);
+  //     dispatch(removeFavoriteMovie(movie.id));
+  //   } else {
+  //     console.log('Dispatching addFavoriteMovie with movie:', movie);
+  //     dispatch(addFavoriteMovie(movie));
+  //   }
+  // }, 300), [dispatch, isFavorite, movie, favoriteMovies]);
+  
+  // const handleFavoriteClick = () => {
+  //   console.log('Current Favorite Movies:', favoriteMovies);
+  //   if (isFavorite) {
+  //     console.log('Dispatching removeFavoriteMovie with id:', movie.id);
+  //     dispatch(removeFavoriteMovie(movie.id));
+  //   } else {
+  //     console.log('Dispatching addFavoriteMovie with movie:', movie);
+  //     dispatch(addFavoriteMovie(movie));
+  //   }
+  // };
   const handleFavoriteClick = () => {
-    if (isFavorite) {
-      dispatch(removeFavoriteMovie(movie.id));
-    } else {
-      dispatch(addFavoriteMovie(movie));
-    }
+    dispatch(isFavorite ? removeFavoriteMovie(movie.id) : addFavoriteMovie(movie));
+    console.log('Dispatching addFavoriteMovie with movie:', movie);
+    console.log('Dispatching removeFavoriteMovie with id:', movie.id);
   };
+
+
+
+  
   // console.log(isFavorite)
 
   const { themeMode } = useTheme();
@@ -71,7 +96,7 @@ export default function MovieCard({movie}) {
       </CardContent>
       <CardActions>
       <IconButton
-          onClick={handleFavoriteClick}
+          onClick= {(handleFavoriteClick)}
           color={isFavorite ? 'error' : 'primary'}
         >
           {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}

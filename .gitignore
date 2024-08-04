@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Ignore API folder
+movies_app/src/API/
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

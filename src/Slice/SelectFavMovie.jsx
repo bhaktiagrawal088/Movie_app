@@ -7,6 +7,6 @@ const selectMoviesState = (state) => state.movies;
 
 export const getFavoriteMovies = createSelector(
     [selectMoviesState],
-    (moviesState) => moviesState.favoriteMovies || [] // Provide a default empty array if undefined
+    (moviesState) => moviesState.favoriteMovie || [] // Provide a default empty array if undefined
 
   );

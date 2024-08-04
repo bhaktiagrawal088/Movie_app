@@ -21,8 +21,12 @@ const MovieSlice =  createSlice({
         },
        
         addFavoriteMovie: (state, action) => {
-          state.favoriteMovie.push(action.payload);
+          const movie = action.payload;
+          if (!state.favoriteMovie.find((m) => m.id === movie.id)) {
+            state.favoriteMovie.push(movie);
+          }
         },
+        
         removeFavoriteMovie: (state, action) => {
           state.favoriteMovie = state.favoriteMovie.filter(movie => movie.id !== action.payload);
         },

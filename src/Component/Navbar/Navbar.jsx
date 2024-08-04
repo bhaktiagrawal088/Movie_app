@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { AppBar, Box, Toolbar, Typography, InputBase } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography, InputBase,  Drawer, List, ListItem, ListItemText } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SelectorComponent from "../SelectorComp/SelectorComponent";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import ThemeBtn from "../ThemeBtn";
 import { lightTheme, darkTheme } from "../../context/themee";
+import {IconButton }from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -53,6 +56,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar() {
   const [themeMode, setThemeMode] = React.useState("light");
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+
 
   const theme = React.useMemo(
     () => (themeMode === "light" ? lightTheme : darkTheme),
@@ -93,11 +98,62 @@ export default function Navbar() {
     { label: "War", value: "war" },
     // Add more genres as needed
   ];
+  
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
+
+  const drawerList = () => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem button component={Link} to="/">
+          <ListItemText primary="Home" />
+        </ListItem>
+        <ListItem button component={Link} to="/favorites">
+          <ListItemText primary="Favorites" />
+        </ListItem>
+        <ListItem>
+          <SelectorComponent
+              genres={genres}
+              onGenreChange={handleGenreChange}
+              selectedGenre={selectedGenre}
+            /> 
+        </ListItem>
+      </List>
+    </Box>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+        <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2, display: { sm: "none" } }}
+            onClick={toggleDrawer(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Drawer
+            anchor="left"
+            open={drawerOpen}
+            onClose={toggleDrawer(false)}
+          >
+            {drawerList()}
+          </Drawer>
           <Typography
             variant="h6"
             noWrap
